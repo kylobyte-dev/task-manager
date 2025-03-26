@@ -5,14 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && node dist/index.js",
-    "dev": "nodemon src/index.ts",
-    "build": "npx tsc"
+    "dev": "node --watch src/index.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/node": "^22.13.13",
     "concurrently": "^9.1.2",

@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { swaga } from "./test.ts";
 
 interface Task {
   name: string;
@@ -13,7 +12,7 @@ interface Task {
 dotenv.config();
 
 const notion = new Client({ auth: process.env.NOTION_API_TOKEN });
-const host = "localhost";
+const host = "0.0.0.0";
 const app: Express = express();
 const port = process.env.PORT ? Number(process.env.PORT) : 8000;
 
@@ -30,8 +29,7 @@ app.get("/", async (req: Request, res: Response) => {
     // return { label: "NOT_FOUND", url: "" };
   });
 
-  res.writeHead(200);
-  res.send("Hello");
+  res.send(JSON.stringify({ hello: "world" }));
 });
 
 app.post("/tasks", async (req: Request, res: Response) => {
@@ -57,7 +55,7 @@ app.post("/tasks", async (req: Request, res: Response) => {
   // }
   // const task: Task = response
   // res.end(JSON.stringify(response));
-  res.writeHead(200);
+
   res.end(JSON.stringify({ data: "Success" }));
 });
 

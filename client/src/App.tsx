@@ -1,11 +1,11 @@
-import './App.css'
+import "./App.css";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import axios from "axios";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,13 +14,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  taskName: z.string()
-})
+  taskName: z.string(),
+});
+
+const BE_URL = import.meta.env.VITE_BE_URL;
 
 export function TaskForm() {
   // 1. Define your form.
@@ -29,21 +30,22 @@ export function TaskForm() {
     defaultValues: {
       taskName: "",
     },
-  })
+  });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    axios.post('http://localhost:8000/tasks', {
-      name: values.taskName
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    axios
+      .post(`${BE_URL}/tasks`, {
+        name: values.taskName,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (
@@ -58,9 +60,7 @@ export function TaskForm() {
               <FormControl>
                 <Input placeholder="" {...field} />
               </FormControl>
-              <FormDescription>
-                This is the task
-              </FormDescription>
+              <FormDescription>This is the task</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -68,28 +68,27 @@ export function TaskForm() {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  )
+  );
 }
 
-
 function App() {
-
   return (
     <>
       <Button
-              type="button"
-              onClick={() => {
-                fetch("http://localhost:8000/")
-                  .then((response) => response.json())
-                  .then((payload) => {
-                    console.log(payload)
-                  });
-              }}
-      >Get Tasks
+        type="button"
+        onClick={() => {
+          fetch(BE_URL)
+            .then((response) => response.json())
+            .then((payload) => {
+              console.log(payload);
+            });
+        }}
+      >
+        Get Tasks
       </Button>
       <TaskForm />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

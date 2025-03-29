@@ -3,10 +3,13 @@ import "./App.css";
 import { Button } from "@/components/ui/button";
 import { TaskForm } from "@/components/TaskForm/TaskForm.tsx";
 import { TaskList } from "@/components/TaskList/TaskList.tsx";
+import { useState } from "react";
 
 const BE_URL = import.meta.env.VITE_BE_URL;
 
 function App() {
+  const [tasks, setTasks] = useState([]);
+
   return (
     <>
       <Button
@@ -16,13 +19,14 @@ function App() {
             .then((response) => response.json())
             .then((payload) => {
               console.log(payload);
+              setTasks(payload.tasks);
             });
         }}
       >
         Get Tasks
       </Button>
       <TaskForm />
-      <TaskList />
+      <TaskList tasks={tasks} />
     </>
   );
 }

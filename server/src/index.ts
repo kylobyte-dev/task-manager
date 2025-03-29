@@ -23,13 +23,18 @@ app.get("/", async (req: Request, res: Response) => {
   const query = await notion.databases.query({
     database_id: process.env.DATABASE_ID || "",
   });
-
+  
   const tasks: any[] = query.results.map((row) => {
-    return row;
-    // return { label: "NOT_FOUND", url: "" };
+    if ("properties" in row) {
+      return {
+        taskName: row.properties.Name.type === "title" && Array.isArray(row.properties.Name.title) && row.properties.Name.title[0]
+      }
+    }
   });
 
-  res.send(JSON.stringify({ hello: "world" }));
+  const filteredTasks = tasks.filter(value => JSON.stringify(value) !== '{}');
+
+  res.send(JSON.stringify({ tasks: filteredTasks }));
 });
 
 app.post("/tasks", async (req: Request, res: Response) => {

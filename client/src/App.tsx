@@ -1,33 +1,20 @@
 import "./App.css";
 
-import { Button } from "@/components/ui/button";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import { TaskForm } from "@/components/TaskForm/TaskForm.tsx";
 import { TaskList } from "@/components/TaskList/TaskList.tsx";
-import { useState } from "react";
-
-const BE_URL = import.meta.env.VITE_BE_URL;
+const queryClient = new QueryClient();
 
 function App() {
-  const [tasks, setTasks] = useState([]);
 
   return (
-    <>
-      <Button
-        type="button"
-        onClick={() => {
-          fetch(BE_URL)
-            .then((response) => response.json())
-            .then((payload) => {
-              console.log(payload);
-              setTasks(payload.tasks);
-            });
-        }}
-      >
-        Get Tasks
-      </Button>
+    <QueryClientProvider client={queryClient}>
       <TaskForm />
-      <TaskList tasks={tasks} />
-    </>
+      <TaskList />
+    </QueryClientProvider>
   );
 }
 

@@ -26,7 +26,7 @@ export function TaskList() {
   
   return (
     <ul>
-      {data.tasks.map((task: Task) => <li><Checkbox /> {task.taskName}</li>)}
+      {data.tasks.map((task: Task) => <li key={task.taskId}><Checkbox checked={task.checked.name === "Done"} /> {task.taskName}</li>)}
     </ul>
   )
 }

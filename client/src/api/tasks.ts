@@ -2,7 +2,13 @@ import { z } from "zod";
 import { makeEndpoint } from "@zodios/core";
 
 export const Task = z.object({
+  taskId: z.string(),
   taskName: z.string(),
+  checked: z.object({
+    color: z.string(),
+    id: z.string(),
+    name: z.string(),
+  }),
 });
 
 export const Tasks = z.array(Task);

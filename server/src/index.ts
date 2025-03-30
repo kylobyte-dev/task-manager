@@ -27,7 +27,9 @@ app.get("/", async (req: Request, res: Response) => {
   const tasks: any[] = query.results.map((row) => {
     if ("properties" in row) {
       return {
-        taskName: row.properties.Name.type === "title" && Array.isArray(row.properties.Name.title) && row.properties.Name.title[0]?.plain_text
+        taskId: row.id,
+        taskName: row.properties.Name.type === "title" && Array.isArray(row.properties.Name.title) && row.properties.Name.title[0]?.plain_text,
+        checked: row.properties.Status.type === "status" && row.properties.Status.status && row.properties.Status.status
       }
     }
   });

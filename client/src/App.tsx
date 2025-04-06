@@ -1,20 +1,23 @@
 import "./App.css";
 
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
-import { TaskForm } from "@/components/TaskForm/TaskForm.tsx";
-import { TaskList } from "@/components/TaskList/TaskList.tsx";
+import { LogtoConfig, LogtoProvider } from "@logto/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Router } from "./Router.tsx";
+
+const config: LogtoConfig = {
+  endpoint: "https://auth.kylobyte.dev/",
+  appId: "c95zcb1fldtqjonnq33pm",
+};
+
 const queryClient = new QueryClient();
 
 function App() {
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <TaskForm />
-      <TaskList />
-    </QueryClientProvider>
+    <LogtoProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <Router />
+      </QueryClientProvider>
+    </LogtoProvider>
   );
 }
 

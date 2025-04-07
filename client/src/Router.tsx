@@ -1,9 +1,15 @@
 // Import the generated route tree
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
+import { useLogto } from "@logto/react";
 
 // Create a new router instance
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  context: {
+    isAuthenticated: false,
+  },
+});
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
@@ -13,5 +19,6 @@ declare module "@tanstack/react-router" {
 }
 
 export const Router = () => {
-  return <RouterProvider router={router} />;
+  const { isAuthenticated } = useLogto();
+  return <RouterProvider router={router} context={{ isAuthenticated }} />;
 };

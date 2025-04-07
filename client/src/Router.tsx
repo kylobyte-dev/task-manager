@@ -19,6 +19,11 @@ declare module "@tanstack/react-router" {
 }
 
 export const Router = () => {
-  const { isAuthenticated } = useLogto();
+  const { isAuthenticated, isLoading } = useLogto();
+
+  if (isLoading) {
+    return null;
+  }
+
   return <RouterProvider router={router} context={{ isAuthenticated }} />;
 };

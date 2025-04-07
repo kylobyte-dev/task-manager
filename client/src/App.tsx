@@ -7,6 +7,7 @@ import { Router } from "./Router.tsx";
 const config: LogtoConfig = {
   endpoint: "https://auth.kylobyte.dev/",
   appId: "c95zcb1fldtqjonnq33pm",
+  resources: ["https://api.taskmanager.kylobyte.dev/"],
 };
 
 const queryClient = new QueryClient();

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import { authMiddleware } from "./middlewares/auth.ts";
 
 interface Task {
   name: string;
@@ -19,7 +20,7 @@ const port = process.env.PORT ? Number(process.env.PORT) : 8000;
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/", async (req: Request, res: Response) => {
+app.get("/", authMiddleware, async (req: Request, res: Response) => {
   const query = await notion.databases.query({
     database_id: process.env.DATABASE_ID || "",
   });
@@ -45,7 +46,7 @@ app.get("/", async (req: Request, res: Response) => {
   res.send(JSON.stringify({ tasks: filteredTasks }));
 });
 
-app.post("/tasks", async (req: Request, res: Response) => {
+app.post("/tasks", authMiddleware, async (req: Request, res: Response) => {
   await notion.pages.create({
     parent: {
       type: "database_id",

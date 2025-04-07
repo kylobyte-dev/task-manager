@@ -15,12 +15,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { config } from "@/lib/config.ts";
+import { useLogto } from "@logto/react";
 
 const formSchema = z.object({
   taskName: z.string(),
 });
 
 export function TaskForm() {
+  const { getAccessToken } = useLogto();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -30,13 +33,24 @@ export function TaskForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const accessToken = await getAccessToken(
+      "https://api.taskmanager.kylobyte.dev/"
+    );
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     axios
-      .post(`${config.beUrl}/tasks`, {
-        name: values.taskName,
-      })
+      .post(
+        `${config.beUrl}/tasks`,
+        {
+          name: values.taskName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
       .then(function (response) {
         console.log(response);
       })

@@ -23,18 +23,24 @@ app.get("/", async (req: Request, res: Response) => {
   const query = await notion.databases.query({
     database_id: process.env.DATABASE_ID || "",
   });
-  
+
   const tasks: any[] = query.results.map((row) => {
     if ("properties" in row) {
       return {
         taskId: row.id,
-        taskName: row.properties.Name.type === "title" && Array.isArray(row.properties.Name.title) && row.properties.Name.title[0]?.plain_text,
-        checked: row.properties.Status.type === "status" && row.properties.Status.status && row.properties.Status.status
-      }
+        taskName:
+          row.properties.Name.type === "title" &&
+          Array.isArray(row.properties.Name.title) &&
+          row.properties.Name.title[0]?.plain_text,
+        checked:
+          row.properties.Status.type === "status" &&
+          row.properties.Status.status &&
+          row.properties.Status.status,
+      };
     }
   });
 
-  const filteredTasks = tasks.filter(value => JSON.stringify(value) !== '{}');
+  const filteredTasks = tasks.filter((value) => JSON.stringify(value) !== "{}");
 
   res.send(JSON.stringify({ tasks: filteredTasks }));
 });

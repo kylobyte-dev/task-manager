@@ -14,12 +14,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { config } from "@/lib/config.ts";
 
 const formSchema = z.object({
   taskName: z.string(),
 });
-
-const BE_URL = import.meta.env.VITE_BE_URL;
 
 export function TaskForm() {
   // 1. Define your form.
@@ -35,7 +34,7 @@ export function TaskForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     axios
-      .post(`${BE_URL}/tasks`, {
+      .post(`${config.beUrl}/tasks`, {
         name: values.taskName,
       })
       .then(function (response) {
